@@ -15,9 +15,14 @@ register(
     entry_point='gym_envs.envs:TicTacToeEnv',
 )
 
+# register(
+#     id='t3r-v0',
+#     entry_point='gym_envs.envs:TicTacToeRoppEnv',
+# )
+
 register(
-    id='t3r-v0',
-    entry_point='gym_envs.envs:TicTacToeRoppEnv',
+    id='f3-v0',
+    entry_point='gym_envs.envs:FicFacFoeEnv',
 )
 
 register(

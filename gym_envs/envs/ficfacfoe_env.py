@@ -13,12 +13,12 @@ reps = ['.', 'X', 'O']
 
 ###
 
-class TicTacToeEnv(gym.Env):
+class FicFacFoeEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self,
-        width=3,
-        height=3
+        width=4,
+        height=4
     ):
         self.width = width
         self.height = height
@@ -131,31 +131,52 @@ class Board:
             return OS
 
     def winner(self):
-        win_states = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
-        ]
-
-        winner = 0.0
-
-        for state in win_states:
-            piece = 0.0
-            check = None
-            found = True
-            for tile in state:
-                x = tile % 3
-                y = tile // 3
-
-                piece = self.board[y][x]
-                if check is None:
-                    check = piece
-                if piece == EM or piece != check:
-                    found = False
+        # check columns
+        for x in range(self.wdt):
+            check = self.board[0][x]
+            win = True
+            for y in range(self.hgt):
+                if self.board[y][x] != check:
+                    win = False
                     break
-            if found:
-                return piece
+
+            if win:
+                return check
+
+        # check rows
+        for y in range(self.hgt):
+            check = self.board[y][0]
+            win = True
+            for x in range(self.hgt):
+                if self.board[y][x] != check:
+                    win = False
+                    break
+
+            if win:
+                return check
+
+        # diagonals
+        if self.wdt == self.hgt:
+            c1 = self.board[0][0]
+            c2 = self.board[0][self.wdt-1]
+
+            w1 = True
+            w2 = True
+            for d in range(self.wdt):
+                if w1:
+                    if self.board[d][d] != c1:
+                        w1 = False
+                if w2:
+                    if self.board[d][self.wdt-1-d] != c2:
+                        c2 = False
+
+            if w1:
+                return c1
+            if w2:
+                return c2
+
         return 0
+
 
     def in_bounds(self, x, y):
         if x < 0 or x >= self.wdt or y < 0 or y >= self.hgt:
@@ -206,12 +227,12 @@ class Board:
         out = ''
         for y in range(self.wdt):
             for x in range(self.hgt):
-                if x == 0:
-                    out += str(self.hgt-y)
+                # if x == 0:
+                #     out += str(self.hgt-y)
                 out += reps[int(self.board[y][x])]
             out += '\n'
-        out += ' '
-        for i in range(self.wdt):
-            out += str(chr(97+i))
-        out += separator
+        # out += ' '
+        # for i in range(self.wdt):
+        #     out += str(chr(97+i))
+        # out += separator
         return out

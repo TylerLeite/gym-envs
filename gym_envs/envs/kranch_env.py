@@ -30,16 +30,18 @@ DEV = True
 OUTPUT = {}
 OUTPUT['write-games-to-file'] = True
 OUTPUT['out-directory'] = os.getcwd() + '/test_data/games'
-try:
-  OUTPUT['out-directory'] = os.getcwd() + '/test_data/' + sys.argv[1] + '/games'
-except IndexError:
-  pass
 
-try:
-  os.mkdir(OUTPUT['out-directory'], 0o777)
-except OSError as e:
-  print(e)
-  pass
+if __name__ == "__main__":
+  try:
+    OUTPUT['out-directory'] = os.getcwd() + '/test_data/' + sys.argv[1] + '/games'
+  except IndexError:
+    pass
+
+  try:
+    os.mkdir(OUTPUT['out-directory'], 0o777)
+  except OSError as e:
+    print(e)
+    pass
 
 VERBOSE = {}
 VERBOSE['silent-sanity-checks'] = True
